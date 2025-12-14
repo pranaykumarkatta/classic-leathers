@@ -150,8 +150,23 @@ public class MyntraReturnSettlementEntry {
     @Column(name = "postpaid_payment")
     private String postpaidPayment;
 
+    @Column(name = "settlement_date_prepaid_comm_deduction")
+    private String settlementDatePrepaidCommDeduction;
+    @Column(name = "settlement_date_prepaid_logistics_deduction")
+    private String settlementDatePrepaidLogisticsDeduction;
+    @Column(name = "settlement_date_prepaid_payment")
+    private String settlementDatePrepaidPayment;
+    @Column(name = "settlement_date_postpaid_comm_deduction")
+    private String settlementDatePostpaidCommDeduction;
+    @Column(name = "settlement_date_postpaid_logistics_deduction")
+    private String settlementDatePostpaidLogisticsDeduction;
+    @Column(name = "settlement_date_postpaid_payment")
+    private String settlementDatePostpaidPayment;
+
     @Column(name = "seller_order_id")
     private String sellerOrderId;
+    @Column(name = "file_name")
+    private String fileName;
 
     public String getOrderReleaseId() {
         return orderReleaseId;
@@ -543,5 +558,61 @@ public class MyntraReturnSettlementEntry {
 
     public void setSellerOrderId(String sellerOrderId) {
         this.sellerOrderId = sellerOrderId;
+    }
+
+    public String getSettlementDatePrepaidCommDeduction() {
+        return settlementDatePrepaidCommDeduction;
+    }
+
+    public void setSettlementDatePrepaidCommDeduction(String settlementDatePrepaidCommDeduction) {
+        this.settlementDatePrepaidCommDeduction = settlementDatePrepaidCommDeduction;
+    }
+
+    public String getSettlementDatePrepaidLogisticsDeduction() {
+        return settlementDatePrepaidLogisticsDeduction;
+    }
+
+    public void setSettlementDatePrepaidLogisticsDeduction(String settlementDatePrepaidLogisticsDeduction) {
+        this.settlementDatePrepaidLogisticsDeduction = settlementDatePrepaidLogisticsDeduction;
+    }
+
+    public String getSettlementDatePrepaidPayment() {
+        return settlementDatePrepaidPayment;
+    }
+
+    public void setSettlementDatePrepaidPayment(String settlementDatePrepaidPayment) {
+        this.settlementDatePrepaidPayment = settlementDatePrepaidPayment;
+    }
+
+    public String getSettlementDatePostpaidCommDeduction() {
+        return settlementDatePostpaidCommDeduction;
+    }
+
+    public void setSettlementDatePostpaidCommDeduction(String settlementDatePostpaidCommDeduction) {
+        this.settlementDatePostpaidCommDeduction = settlementDatePostpaidCommDeduction;
+    }
+
+    public String getSettlementDatePostpaidLogisticsDeduction() {
+        return settlementDatePostpaidLogisticsDeduction;
+    }
+
+    public void setSettlementDatePostpaidLogisticsDeduction(String settlementDatePostpaidLogisticsDeduction) {
+        this.settlementDatePostpaidLogisticsDeduction = settlementDatePostpaidLogisticsDeduction;
+    }
+
+    public String getSettlementDatePostpaidPayment() {
+        return settlementDatePostpaidPayment;
+    }
+
+    public void setSettlementDatePostpaidPayment(String settlementDatePostpaidPayment) {
+        this.settlementDatePostpaidPayment = settlementDatePostpaidPayment;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

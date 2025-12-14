@@ -138,6 +138,12 @@ public class MyntraService {
                 myntraForwardSettlementEntry.setPostpaidCommissionDeduction(data[45]);
                 myntraForwardSettlementEntry.setPostpaidLogisticsDeduction(data[46]);
                 myntraForwardSettlementEntry.setPostpaidPayment(data[47]);
+                myntraForwardSettlementEntry.setSettlementDatePrepaidCommDeduction(data[48]);
+                myntraForwardSettlementEntry.setSettlementDatePrepaidLogisticsDeduction(data[49]);
+                myntraForwardSettlementEntry.setSettlementDatePrepaidPayment(data[50]);
+                myntraForwardSettlementEntry.setSettlementDatePostpaidCommDeduction(data[51]);
+                myntraForwardSettlementEntry.setSettlementDatePostpaidLogisticsDeduction(data[52]);
+                myntraForwardSettlementEntry.setSettlementDatePostpaidPayment(data[53]);
                 if ((file.getOriginalFilename().contains("MYNTRA_FORWARD_UN_SETTLEMENT"))) {
                     myntraForwardSettlementEntry.setSellerOrderId(data[108]);
                 } else if ((file.getOriginalFilename().contains("MYNTRA_FORWARD_SETTLEMENT"))) {
@@ -145,6 +151,7 @@ public class MyntraService {
                 }
                 myntraForwardSettlementEntry.setMarketingChargesPrepaid(data[153]);
                 myntraForwardSettlementEntry.setMarketingChargesPostpaid(data[154]);
+                myntraForwardSettlementEntry.setFileName(file.getOriginalFilename());
                 myntraForwardSettlementEntries.add(myntraForwardSettlementEntry);
             }
             Integer count = myntraForwardSettlementEntryRepository.saveAll(myntraForwardSettlementEntries).size();
@@ -214,11 +221,18 @@ public class MyntraService {
                 myntraReturnSettlementEntry.setPostpaidCommissionDeduction(data[45]);
                 myntraReturnSettlementEntry.setPostpaidLogisticsDeduction(data[46]);
                 myntraReturnSettlementEntry.setPostpaidPayment(data[47]);
+                myntraReturnSettlementEntry.setSettlementDatePrepaidCommDeduction(data[48]);
+                myntraReturnSettlementEntry.setSettlementDatePrepaidLogisticsDeduction(data[49]);
+                myntraReturnSettlementEntry.setSettlementDatePrepaidPayment(data[50]);
+                myntraReturnSettlementEntry.setSettlementDatePostpaidCommDeduction(data[51]);
+                myntraReturnSettlementEntry.setSettlementDatePostpaidLogisticsDeduction(data[52]);
+                myntraReturnSettlementEntry.setSettlementDatePostpaidPayment(data[53]);
                 if ((file.getOriginalFilename().contains("MYNTRA_RETURN_UN_SETTLEMENT"))) {
                     myntraReturnSettlementEntry.setSellerOrderId(data[108]);
                 } else if ((file.getOriginalFilename().contains("MYNTRA_RETURN_SETTLEMENT"))) {
                     myntraReturnSettlementEntry.setSellerOrderId(data[139]);
                 }
+                myntraReturnSettlementEntry.setFileName(file.getOriginalFilename());
                 myntraReturnSettlementEntries.add(myntraReturnSettlementEntry);
             }
             Integer count = myntraReturnSettlementEntryRepository.saveAll(myntraReturnSettlementEntries).size();

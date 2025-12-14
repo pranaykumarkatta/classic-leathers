@@ -1,11 +1,11 @@
 package com.classicLeathers.classic_leathers_inventory_api.repository;
 
-import com.classicLeathers.classic_leathers_inventory_api.model.MyntraSku;
+import com.classicLeathers.classic_leathers_inventory_api.model.CustomerData;
 import com.classicLeathers.classic_leathers_inventory_api.model.Sku;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface InventoryRepository extends JpaRepository<MyntraSku, Long> {
+public interface CustomerRepository extends JpaRepository<CustomerData, Long> {
 }

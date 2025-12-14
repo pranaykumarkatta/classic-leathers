@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStreamReader;
+import com.opencsv.CSVReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,13 +20,16 @@ public class UnicommerceShipmentService {
 
     public String processUnicommerceShipmentReport(MultipartFile file) {
         try {
-            String fileData = new String(file.getBytes(), StandardCharsets.UTF_8);
-            List<String> dataRows = new ArrayList<>();
-            dataRows.addAll(Arrays.asList(fileData.split("\n")));
+            CSVReader reader = new CSVReader(
+                    new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8)
+            );
+            List<String[]> dataRows = new ArrayList<>();
+            dataRows.addAll(reader.readAll());
+            reader.close();
             dataRows.remove(0);
             List<UnicommerceShipment> unicommerceShipments = new ArrayList<>();
             for (int i = 0; i < dataRows.size(); i++) {
-                String[] data = dataRows.get(i).split(",");
+                String[] data = dataRows.get(i);
                 UnicommerceShipment unicommerceShipment = new UnicommerceShipment();
                 unicommerceShipment.setShipment(data[0]);
                 unicommerceShipment.setReadyForQuickPacking(data[2]);
