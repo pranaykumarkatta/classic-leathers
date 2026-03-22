@@ -1,13 +1,10 @@
 package com.classicLeathers.classic_leathers_inventory_api.service;
 
-import com.classicLeathers.classic_leathers_inventory_api.model.MyntraAdvertisementEntry;
-import com.classicLeathers.classic_leathers_inventory_api.model.MyntraForwardSettlementEntry;
-import com.classicLeathers.classic_leathers_inventory_api.model.MyntraOrderFlowEntry;
-import com.classicLeathers.classic_leathers_inventory_api.model.MyntraReturnSettlementEntry;
-import com.classicLeathers.classic_leathers_inventory_api.repository.MyntraAdvertisementRepository;
-import com.classicLeathers.classic_leathers_inventory_api.repository.MyntraForwardSettlementEntryRepository;
-import com.classicLeathers.classic_leathers_inventory_api.repository.MyntraOrderFlowReportRepository;
-import com.classicLeathers.classic_leathers_inventory_api.repository.MyntraReturnSettlementEntryRepository;
+import com.classicLeathers.classic_leathers_inventory_api.model.*;
+import com.classicLeathers.classic_leathers_inventory_api.repository.*;
+import com.classicLeathers.classic_leathers_inventory_api.util.BatchSaveService;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,12 +19,18 @@ import java.util.List;
 public class MyntraService {
     @Autowired
     MyntraOrderFlowReportRepository myntraOrderFlowReportRepository;
+
+    @Autowired
+    private BatchSaveService batchSaveService;
     @Autowired
     MyntraForwardSettlementEntryRepository myntraForwardSettlementEntryRepository;
     @Autowired
     MyntraReturnSettlementEntryRepository myntraReturnSettlementEntryRepository;
     @Autowired
     MyntraAdvertisementRepository myntraAdvertisementRepository;
+
+    @Autowired
+    MyntraRebateDetailsRepository myntraRebateDetailsRepository;
 
     public String processMyntraOrderFlowReport(MultipartFile file) {
         try {
@@ -71,7 +74,11 @@ public class MyntraService {
                 myntraOrderFlowEntry.setCommissionTotalAmount(data[29]);
                 myntraOrderFlowEntries.add(myntraOrderFlowEntry);
             }
-            Integer count = myntraOrderFlowReportRepository.saveAll(myntraOrderFlowEntries).size();
+
+
+//            Integer count = myntraOrderFlowReportRepository.saveAll(myntraOrderFlowEntries).size();
+            Integer count = myntraOrderFlowEntries.size();
+            batchSaveService.saveInBatch(myntraOrderFlowEntries);
             System.out.println("ORDER_FLOW_REPORT processed successfully for " + file.getOriginalFilename() + " :: records processed : " + count);
             return "ORDER_FLOW_REPORT processed successfully for " + file.getName() + " :: records processed : " + count;
         } catch (Exception e) {
@@ -154,7 +161,9 @@ public class MyntraService {
                 myntraForwardSettlementEntry.setFileName(file.getOriginalFilename());
                 myntraForwardSettlementEntries.add(myntraForwardSettlementEntry);
             }
-            Integer count = myntraForwardSettlementEntryRepository.saveAll(myntraForwardSettlementEntries).size();
+//            Integer count = myntraForwardSettlementEntryRepository.saveAll(myntraForwardSettlementEntries).size();
+            Integer count = myntraForwardSettlementEntries.size();
+            batchSaveService.saveInBatch(myntraForwardSettlementEntries);
             System.out.println("MYNTRA_SETTLEMENT_REPORT processed successfully for " + file.getOriginalFilename() + " :: records processed : " + count);
             return "MYNTRA_SETTLEMENT_REPORT processed successfully for " + file.getName() + " :: records processed : " + count;
         } catch (Exception e) {
@@ -235,7 +244,9 @@ public class MyntraService {
                 myntraReturnSettlementEntry.setFileName(file.getOriginalFilename());
                 myntraReturnSettlementEntries.add(myntraReturnSettlementEntry);
             }
-            Integer count = myntraReturnSettlementEntryRepository.saveAll(myntraReturnSettlementEntries).size();
+//            Integer count = myntraReturnSettlementEntryRepository.saveAll(myntraReturnSettlementEntries).size();
+            Integer count = myntraReturnSettlementEntries.size();
+            batchSaveService.saveInBatch(myntraReturnSettlementEntries);
             System.out.println("MYNTRA_SETTLEMENT_REPORT processed successfully for " + file.getOriginalFilename() + " :: records processed : " + count);
             return "MYNTRA_SETTLEMENT_REPORT processed successfully for " + file.getName() + " :: records processed : " + count;
         } catch (Exception e) {
@@ -280,6 +291,54 @@ public class MyntraService {
             Integer count = myntraAdvertisementRepository.saveAll(myntraAdvertisementEntries).size();
             System.out.println("MYNTRA_ADV_REPORT processed successfully for " + file.getOriginalFilename() + " :: records processed : " + count);
             return "MYNTRA_ADV_REPORT processed successfully for " + file.getName() + " :: records processed : " + count;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "File upload failed: " + e.getMessage();
+        }
+    }
+
+    public String processMyntraRebateReport(MultipartFile file) {
+        try {
+            String fileData = new String(file.getBytes(), StandardCharsets.UTF_8);
+            List<String> dataRows = new ArrayList<>();
+            dataRows.addAll(Arrays.asList(fileData.split("\n")));
+            dataRows.remove(0);
+            List<MyntraRebateDetails> myntraRebateDetailsList = new ArrayList<>();
+            for (int i = 0; i < dataRows.size(); i++) {
+                String[] data = dataRows.get(i).split(",");
+                MyntraRebateDetails myntraRebateDetails = new MyntraRebateDetails();
+                myntraRebateDetails.setReleaseId(data[0]);
+                myntraRebateDetails.setOrderCreatedDate(data[1]);
+                myntraRebateDetails.setEventStartDate(data[2]);
+                myntraRebateDetails.setEventEndDate(data[3]);
+                myntraRebateDetails.setBrand(data[4]);
+                myntraRebateDetails.setArticle(data[5]);
+                myntraRebateDetails.setGender(data[6]);
+                myntraRebateDetails.setPackingDate(data[7]);
+                myntraRebateDetails.setDeliveryDate(data[8]);
+                myntraRebateDetails.setReturnedDate(data[9]);
+                myntraRebateDetails.setOrderTerminalState(data[10]);
+                myntraRebateDetails.setIncentiveEligible(data[11]);
+                myntraRebateDetails.setMrp(data[12]);
+                myntraRebateDetails.setCouponDiscount(data[13]);
+                myntraRebateDetails.setProductDiscount(data[14]);
+                myntraRebateDetails.setGmv(data[15]);
+                myntraRebateDetails.setTdPercentage(data[16]);
+                myntraRebateDetails.setRebatePercentage(data[17]);
+                myntraRebateDetails.setRebateAmount(data[18]);
+                myntraRebateDetails.setRebateAmountWithTax(data[19]);
+                myntraRebateDetails.setSellerName(data[20]);
+                myntraRebateDetails.setStyleId(data[21]);
+                myntraRebateDetails.setReportGenerationDate(data[22]);
+                myntraRebateDetails.setReportLevel(data[23]);
+                myntraRebateDetails.setYear(data[24]);
+                myntraRebateDetails.setEventName(data[25]);
+                myntraRebateDetails.setTermId(data[26]);
+                myntraRebateDetailsList.add(myntraRebateDetails);
+            }
+            Integer count = myntraRebateDetailsRepository.saveAll(myntraRebateDetailsList).size();
+            System.out.println("MYNTRA rebate file processed successfully for " + file.getOriginalFilename() + " :: records processed : " + count);
+            return "MYNTRA rebate file processed successfully for " + file.getName() + " :: records processed : " + count;
         } catch (Exception e) {
             e.printStackTrace();
             return "File upload failed: " + e.getMessage();

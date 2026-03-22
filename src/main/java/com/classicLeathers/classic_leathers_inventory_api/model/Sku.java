@@ -20,11 +20,14 @@ public class Sku {
     @Column(name = "category", length = 255)
     private String category;
 
-    @Column(name = "created_on")
-    private LocalDateTime createdOn;
+    @Column(name = "sub_category", length = 255)
+    private String subCategory;
 
     @Column(name = "description", length = 255)
     private String description;
+
+    @Column(name = "sku_label", length = 255)
+    private String skuLabel;
 
     @Column(name = "mrp")
     private Integer mrp;
@@ -35,11 +38,8 @@ public class Sku {
     @Column(name = "purchase_cost")
     private Integer purchaseCost;
 
-    @Column(name = "sku_label", length = 255)
-    private String skuLabel;
-
-    @Column(name = "sub_category", length = 255)
-    private String subCategory;
+    @Column(name = "created_on")
+    private LocalDateTime createdOn;
 
     @Column(name = "updated_on")
     private LocalDateTime updatedOn;
@@ -142,11 +142,17 @@ public class Sku {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Sku sku)) return false;
-        return Objects.equals(getBrand(), sku.getBrand()) && Objects.equals(getCategory(), sku.getCategory()) && Objects.equals(getCreatedOn(), sku.getCreatedOn()) && Objects.equals(getDescription(), sku.getDescription()) && Objects.equals(getMrp(), sku.getMrp()) && Objects.equals(getOnlineSku(), sku.getOnlineSku()) && Objects.equals(getPurchaseCost(), sku.getPurchaseCost()) && Objects.equals(getSkuLabel(), sku.getSkuLabel()) && Objects.equals(getSubCategory(), sku.getSubCategory()) && Objects.equals(getUpdatedOn(), sku.getUpdatedOn());
+        return Objects.equals(getBrand(), sku.getBrand()) &&
+                Objects.equals(getCategory(), sku.getCategory()) &&
+                Objects.equals(getDescription(), sku.getDescription()) &&
+                Objects.equals(getMrp(), sku.getMrp()) &&
+                Objects.equals(getPurchaseCost(), sku.getPurchaseCost()) &&
+                Objects.equals(getSkuLabel(), sku.getSkuLabel()) &&
+                Objects.equals(getSubCategory(), sku.getSubCategory());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getBrand(), getCategory(), getCreatedOn(), getDescription(), getMrp(), getOnlineSku(), getPurchaseCost(), getSkuLabel(), getSubCategory(), getUpdatedOn());
+        return Objects.hash(getBrand(), getCategory(), getDescription(), getMrp(), getPurchaseCost(), getSkuLabel(), getSubCategory());
     }
 }

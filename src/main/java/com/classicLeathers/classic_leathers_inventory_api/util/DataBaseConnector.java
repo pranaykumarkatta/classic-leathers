@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DataBaseConnector {
-    private static final String DB_URL = "jdbc:postgresql://db.wvezsasqnatgrluchcvk.supabase.co:5432/postgres";
-    private static final String DB_USER = "postgres";
-    private static final String DB_PASSWORD = "99craftsOnlineSales";
+    private static final String DB_URL = "jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:6543/postgres?";
+    private static final String DB_USER = "postgres.wvezsasqnatgrluchcvk";
+    private static final String DB_PASSWORD = "6A73YsTK6959gEeW";
     private static Connection connection = null;
 
     static {
